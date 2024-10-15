@@ -1,6 +1,6 @@
-import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import Home from './views/Home';
+import Image from './views/Image';
 import MainView from './views/MainView';
 
 const routes = createBrowserRouter([
@@ -11,6 +11,10 @@ const routes = createBrowserRouter([
       {
         index: true,
         element: <Home />
+      },
+      {
+        path: '/image',
+        element: <Image />
       },
     ]
   },
