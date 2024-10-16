@@ -1,0 +1,8 @@
+.buttons > * {
+    margin-left: 10px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: var(--hot-neutral-700)
+}

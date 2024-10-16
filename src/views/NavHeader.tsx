@@ -24,13 +24,13 @@ const NavHeader = () => {
             }
         },
         {
-            label: '1. IMAGERY',
+            label: '1. IMAGE',
             clickEvent: async () => {
                 navigate("/image");
             }
         },
         {
-            label: '2. MAPPING',
+            label: '2. MAP',
             clickEvent: async () => {
                 navigate("/mapping");
             }

@@ -1,14 +1,23 @@
-import React from 'react';
 import { RouterProvider } from 'react-router-dom';
-import '@hotosm/ui/dist/style.css';
-
+import { store, persistor } from './store';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import AppRoutes from './routes';
+import '@hotosm/ui/dist/style.css';
 
 const App = () => {
   return (
-    <RouterProvider router={AppRoutes} />
+    <Provider store={store}>
+      <PersistGate 
+        loading={<LoadingComponent />}
+        persistor={persistor}
+        >
+          <RouterProvider router={AppRoutes} />
+      </PersistGate>
+    </Provider>
   );
 };
 
-export default App;
+const LoadingComponent = () => <div>Loading...</div>;
 
+export default App;

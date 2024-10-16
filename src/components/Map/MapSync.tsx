@@ -6,7 +6,9 @@ import { Select, Option } from '@hotosm/ui/dist/react';
 
 const MapSync = ({
     center,
-    zoom
+    zoom,
+    aoi,
+    grid
 }) => {
     const map1 = useRef(null);
     const map2 = useRef(null);
@@ -26,10 +28,8 @@ const MapSync = ({
 
     return (
         <div className="maps">
-            <div>
-            </div>
             <div className="map">
-                <Map source={sourceLeft} onLoad={(map) => handleLoadMap(map, map1)} center={center} zoom={zoom} />
+                <Map grid={grid} aoi={aoi} source={sourceLeft} onLoad={(map) => handleLoadMap(map, map1)} center={center} zoom={zoom} />
                 <Select value={sourceLeft} onSlChange={(e) => handleSourceChange(e, setSourceLeft)} className="selectSource">
                     <Option value="osm">OpenStreetMap</Option>
                     <Option value="esri">Satellite (ESRI)</Option>
@@ -37,7 +37,7 @@ const MapSync = ({
                 </Select>
             </div>
             <div className="map">
-                <Map source={sourceRight} onLoad={(map) => handleLoadMap(map, map2)} center={center} zoom={zoom} />
+                <Map grid={grid} aoi={aoi} source={sourceRight} onLoad={(map) => handleLoadMap(map, map2)} center={center} zoom={zoom} />
                 <Select value={sourceRight} onSlChange={(e) => handleSourceChange(e, setSourceRight)} className="selectSource">
                     <Option value="osm">OpenStreetMap</Option>
                     <Option value="esri">Satellite (ESRI)</Option>

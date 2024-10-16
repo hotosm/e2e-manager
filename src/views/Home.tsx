@@ -1,5 +1,5 @@
 
-import AOI from "./AOI";
+import AOI from "./AOI/AOI";
 
 const Home = () => {
     return (

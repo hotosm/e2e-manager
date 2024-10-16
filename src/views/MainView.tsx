@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 import NavHeader from './NavHeader';
 import { Consent } from '@hotosm/ui/dist/react';
 import "./MainView.style.css";

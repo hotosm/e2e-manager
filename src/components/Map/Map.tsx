@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { getMapBase } from "./MapBaselayer";
+import extent from 'turf-extent';
 import "./Map.style.css";
 
 const Map = ({
@@ -10,7 +11,9 @@ const Map = ({
     source,
     config,
     mapProps,
-    onLoad
+    onLoad,
+    aoi,
+    grid
 }) => {
 
     const map = useRef(null);
@@ -19,7 +22,6 @@ const Map = ({
     // Map initialization
     useEffect(() => {
         if (map.current) return;
-
         const rasterStyle = getMapBase(source, config);
         let mapLibreOptions = {
             container: mapContainer.current,
@@ -35,28 +37,60 @@ const Map = ({
             map.current.addControl(new maplibregl.NavigationControl());
             onLoad && onLoad(map.current);
         });
-    }, [center]);
+    }, []);
 
-    // Center
-    useEffect(() => {
-        if (!map.current || !center) return;
-        map.current.setCenter(center);
-    }, [map.current, center]);
-
-    // Zoom
-    useEffect(() => {
-        if (!map.current || !zoom) return;
-        map.current.setZoom(zoom);
-    }, [map.current, zoom]);
 
     // Source
     useEffect(() => {
-        if (!map.current || !source) return;
+        if (!map.current) return;
         const rasterStyle = getMapBase(source, config);
         map.current.setStyle(rasterStyle)
-    }, [map.current, source]);
 
-        
+        map.current.once("styledata", () => {
+            // AOI
+            if (aoi) {
+                map.current.addSource("aoi", {
+                    type: "geojson",
+                    data: aoi,
+                });
+                map.current.addLayer({
+                    id: "aoi",
+                    type: "line",
+                    source: "aoi",
+                    paint: {
+                        "line-color": getComputedStyle(document.body).getPropertyValue('--hot-color-primary-700'),
+                        'line-dasharray': [2, 2],
+                        'line-width': 3,
+                    }
+                });
+
+                const bbox = extent(aoi);
+                map.current.fitBounds(bbox, {
+                    padding: 20
+                });
+            }
+
+            // Grid
+            if (grid) {
+                map.current.addSource("grid", {
+                    type: "geojson",
+                    data: grid || [],
+                });
+                map.current.addLayer({
+                    id: "grid",
+                    type: "line",
+                    source: "grid",
+                    paint: {
+                        "line-color": getComputedStyle(document.body).getPropertyValue('--hot-color-neutral-0'),
+                        'line-dasharray': [2, 2],
+                        'line-width': 1,
+                    }
+                });
+            }
+
+        });
+    }, [map.current, source, grid, aoi]);
+
     return (
         <div
             className={"mapWrapper"}

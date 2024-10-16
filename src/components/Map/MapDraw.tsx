@@ -4,9 +4,13 @@ import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import Map from "./Map";
 
 const MapDraw = ({
-    onDrawAOI,
+    onDraw,
     center,
-    zoom
+    zoom,
+    aoi,
+    grid,
+    source,
+    onLoad
 }) => {
 
     const draw = useRef(null);
@@ -15,7 +19,7 @@ const MapDraw = ({
     MapboxDraw.constants.classes.CONTROL_PREFIX = 'maplibregl-ctrl-';
     MapboxDraw.constants.classes.CONTROL_GROUP = 'maplibregl-ctrl-group';
 
-    const onLoadMap = (map) => {
+    const handleMapLoad = (map) => {
         draw.current = new MapboxDraw({
             displayControlsDefault: false,
             controls: {
@@ -25,24 +29,22 @@ const MapDraw = ({
 
         });
 
-        const updateArea = (e) => {
+        const handleDraw = (e) => {
             const data = draw.current.getAll();
-            onDrawAOI && onDrawAOI(data);
+            onDraw && onDraw(data);
         }
 
-        map.on('draw.create', updateArea);
-        map.on('draw.delete', updateArea);
-        map.on('draw.update', updateArea);
+        map.on('draw.create', handleDraw);
+        map.on('draw.delete', handleDraw);
+        map.on('draw.update', handleDraw);
         map.addControl(draw.current);
+
+        onLoad && onLoad();
     }
 
-    const map = Map({
-        center: center,
-        zoom: zoom,
-        onLoad: onLoadMap,
-    });
-
-    return map
+    return (
+        <Map aoi={aoi} source={"osm"} onLoad={handleMapLoad} center={center} zoom={zoom} />
+    )
 }
 
 export default MapDraw;

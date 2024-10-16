@@ -18,7 +18,7 @@ export const getMapBase = (source = "osm", config) => {
         ],
         tileSize: 256,
         attribution: "&copy; OpenStreetMap Contributors &copy; ESRI",
-        maxzoom: 18,
+        maxzoom: 17,
       },
       bing: {
         type: "raster",
