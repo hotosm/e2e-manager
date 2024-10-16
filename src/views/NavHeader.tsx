@@ -4,7 +4,9 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 const tabsPath = {
     "/": 0,
-    "/image": 1
+    "/image": 1,
+    "/mapping": 2,
+    "/use": 3
 }
 
 const NavHeader = () => {
@@ -30,7 +32,7 @@ const NavHeader = () => {
             }
         },
         {
-            label: '2. MAP',
+            label: '2. MAPPING',
             clickEvent: async () => {
                 navigate("/mapping");
             }
